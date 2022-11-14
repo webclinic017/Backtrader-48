@@ -1,0 +1,4 @@
+backtrader
+python-binance
+pandas
+python-dotenv
