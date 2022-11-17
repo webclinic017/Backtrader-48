@@ -7,24 +7,26 @@ class Agent:
         self.leverage = leverage
         self.commission = commission
 
-        self.orderer = Orderer()
+        self.holding = 0
+
+        self.orderer = Orderer(self.asset, self.commission)
         self.analyzer = Analyzer()
 
-    def open_long_position(self):
+    def open_long_position(self, price, amount):
         print('Open long position.')
-        self.orderer.buy()
+        self.asset, self.holding = self.orderer.open_long_position(price, amount)
 
-    def close_long_position(self):
+    def close_long_position(self, price, amount):
         print('Close long position.')
-        self.orderer.sell()
+        self.asset, self.holding = self.orderer.close_long_position(price, amount)
 
-    def open_short_position(self):
+    def open_short_position(self, price, amount):
         print('Open short position.')
-        self.orderer.sell()
+        self.asset, self.holding = self.orderer.open_short_position(price, amount)
 
-    def close_short_position(self):
+    def close_short_position(self, price, amount):
         print('Close short position.')
-        self.orderer.buy()
+        self.asset, self.holding = self.orderer.close_short_position(price, amount)
 
     def log(self):
         self.analyzer.log()
@@ -37,5 +39,5 @@ class Agent:
 
 if __name__ == '__main__':
     agent = Agent(100, 2, 1)
-    
+    agent.open_long_position(100, 1)
     agent.log()
