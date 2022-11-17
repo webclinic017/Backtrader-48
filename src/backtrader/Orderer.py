@@ -15,7 +15,8 @@ class Orderer:
 				return self.asset, self.holding
 
 		except ValueError as msg:
-		  print(msg)
+			print(msg)
+			return None, None
 
 	def close_long_position(self, price, amount):
 		try:
@@ -27,7 +28,8 @@ class Orderer:
 				return self.asset, self.holding
 
 		except ValueError as msg:
-		  print(msg)
+			print(msg)
+			return None, None
 
 	def open_short_position(self, price, amount):
 		try:
@@ -40,6 +42,7 @@ class Orderer:
 
 		except ValueError as msg:
 			print(msg)
+			return None, None
 
 	def close_short_position(self, price, amount):
 		try:
@@ -52,7 +55,8 @@ class Orderer:
 
 		except ValueError as msg:
 			print(msg)
-  
+			return None, None
+
 	def __buy(self, price, amount):
 		self.asset -= price * amount * (1 + self.commission)
 		self.holding += amount	

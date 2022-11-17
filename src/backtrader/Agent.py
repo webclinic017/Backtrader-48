@@ -1,16 +1,19 @@
+import pandas as pd
+
 from Orderer import Orderer
 from Analyzer import Analyzer
 
 class Agent:
-    def __init__(self, asset, leverage, commission):
+    def __init__(self, asset, leverage, commission, dataframe):
         self.asset = asset
         self.leverage = leverage
-        self.commission = commission
-
+        self.commission = commission / 100
+        self.dataframe = dataframe
+        
         self.holding = 0
 
         self.orderer = Orderer(self.asset, self.commission)
-        self.analyzer = Analyzer()
+        self.analyzer = Analyzer(self.dataframe)
 
     def open_long_position(self, price, amount):
         print('Open long position.')
@@ -38,6 +41,8 @@ class Agent:
 
 
 if __name__ == '__main__':
-    agent = Agent(100, 2, 1)
+    df = [1, 2, 3]
+    df = pd.DataFrame(df)
+    
+    agent = Agent(100, 2, 1, df)
     agent.open_long_position(100, 1)
-    agent.log()
