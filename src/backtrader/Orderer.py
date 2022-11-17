@@ -60,17 +60,3 @@ class Orderer:
 	def __sell(self, price, amount):
 		self.asset += price * amount * (1 - self.commission)
 		self.holding -= amount
-  
-	def log_detail(self, price):
-		print('holding:', self.holding)
-		print('asset:', self.asset)
-		print('weight asset:', self.asset + self.holding*price*2)
-  
-if __name__ == '__main__':
-	orderer = Orderer(100, 0.00001)
-
-	orderer.open_short_position(10, 9)
-	orderer.open_short_position(10, 8)
- 
-	orderer.close_short_position(10, 9)
-	orderer.close_short_position(10, 8)
