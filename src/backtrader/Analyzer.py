@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 
+
 class Analyzer:
     def __init__(self, dataframe):
         self.dataframe = dataframe
@@ -22,12 +23,21 @@ class Analyzer:
         self.close_place = []
         self.asset_change = []
 
-    def record_open(self, price):
+    def record_open(self, asset, price):
+        self.open_asset = asset
+
         self.open_place.append(price*0.95)
         self.close_place.append(np.nan)
         self.holding_change = True
 
-    def record_close(self, price):
+    def record_close(self, asset, price):
+        if (asset > self.open_asset):
+            self.win_order += 1
+            self.win_money += asset - self.open_asset
+        else:
+            self.loss_order += 1
+            self.loss_money += self.open_asset - asset
+
         self.open_place.append(np.nan)
         self.close_place.append(price*0.95)
         self.holding_change = True
@@ -53,14 +63,22 @@ class Analyzer:
         print('earn rate:', self.__calculate_rate(
             self.win_money, self.loss_money))
 
-        add_plot = [mplfinance.make_addplot(self.asset_change, type='line', panel=1),
-                    mpf.make_addplot(self.buy_place, type='scatter',
+        add_plot = [mpf.make_addplot(self.asset_change, type='line', panel=1),
+                    mpf.make_addplot(self.open_place, type='scatter',
                                      marker='^', markersize=100),
-                    mpf.make_addplot(self.sell_place, type='scatter', marker='v', markersize=100)]
-
+                    mpf.make_addplot(self.close_place, type='scatter', marker='v', markersize=100)]
+        mpf.plot(self.dataframe, type='line', addplot=add_plot, main_panel=0)
         plt.plot(self.asset_change)
         plt.show()
 
+    def log_detail(self):
+        print('win order:', self.win_order)
+        print('loss order:', self.loss_order)
+
+        print('win money:', self.win_money)
+        print('loss money:', self.loss_money)
+
+    @staticmethod
     def __calculate_rate(win, loss):
         return win / (win + loss)
 
@@ -69,5 +87,5 @@ if __name__ == '__main__':
     df = [1, 2, 3]
     df = pd.DataFrame(df)
     analyzer = Analyzer(df)
-    
+
     analyzer.analysis()
