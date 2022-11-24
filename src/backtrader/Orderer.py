@@ -12,7 +12,7 @@ class Orderer:
 			if self.asset < price * _amount * (1 + self.commission):
 				raise ValueError('No enough asset.')
 			else:
-				print('Open long position.')
+				#print('Open long position.')
 				self.__buy(price, _amount)
 				return self.asset, self.holding
 
@@ -26,7 +26,7 @@ class Orderer:
 			if self.holding < _amount:
 				raise ValueError('No enough holding.')
 			else:
-				print('Close long position.')
+				#print('Close long position.')
 				self.__sell(price, _amount)
 				return self.asset, self.holding
 
@@ -40,7 +40,7 @@ class Orderer:
 			if self.asset + self.holding*price*2 < price * _amount * (1 + self.commission):
 				raise ValueError('No enough asset.')
 			else:
-				print('Open short position.')
+				#print('Open short position.')
 				self.__sell(price, _amount)
 				return self.asset, self.holding
 
@@ -54,7 +54,7 @@ class Orderer:
 			if self.holding > _amount:
 				raise ValueError('No enough holding.')
 			else:
-				print('Close short position.')
+				#print('Close short position.')
 				self.__buy(price, _amount)
 				return self.asset, self.holding
 
