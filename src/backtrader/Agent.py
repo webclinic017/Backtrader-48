@@ -1,7 +1,6 @@
 import pandas as pd
-
-from Orderer import Orderer
-from Analyzer import Analyzer
+from backtrader import Orderer
+from backtrader import Analyzer
 
 
 class Agent:
@@ -13,41 +12,46 @@ class Agent:
 
         self.holding = 0
 
-        self.orderer = Orderer(self.asset, self.commission, self.leverage)
-        self.analyzer = Analyzer(self.dataframe)
+        self.orderer = Orderer.Orderer(
+            self.asset, self.commission, self.leverage)
+        self.analyzer = Analyzer.Analyzer(self.dataframe)
 
     def open_long_position(self, price, amount):
         print('Open long position.')
+        self.analyzer.record_open(self.asset, price)
+
         self.asset, self.holding = self.orderer.open_long_position(
             price, amount)
-
-        self.analyzer.record_open(price)
 
     def close_long_position(self, price, amount):
         print('Close long position.')
         self.asset, self.holding = self.orderer.close_long_position(
             price, amount)
 
-        self.analyzer.record_close(price)
+        self.analyzer.record_close(self.asset, price)
 
     def open_short_position(self, price, amount):
         print('Open short position.')
+        self.analyzer.record_open(self.asset, price)
+
         self.asset, self.holding = self.orderer.open_short_position(
             price, amount)
-
-        self.analyzer.record_open(price)
 
     def close_short_position(self, price, amount):
         print('Close short position.')
         self.asset, self.holding = self.orderer.close_short_position(
             price, amount)
 
-        self.analyzer.record_close(price)
+        self.analyzer.record_close(self.asset, price)
 
     def log(self, price):
         self.analyzer.record_log(self.asset, self.holding, price)
         print('asset:', self.asset + self.holding * price)
         print('holding:', self.holding)
+        print()
+
+    def analyze(self):
+        self.analyzer.analysis()
 
     def print_agent_detail(self):
         print('asset:', self.asset)
@@ -56,9 +60,14 @@ class Agent:
 
 
 if __name__ == '__main__':
-    df = [1, 2, 3]
+    df = [100, 200, 3]
     df = pd.DataFrame(df)
 
     agent = Agent(100, 2, 1, df)
     agent.open_long_position(100, 1)
     agent.log(100)
+    agent.close_long_position(200, 1)
+    agent.log(200)
+
+    # agent.analyzer.log_detail()
+    # agent.analyze()
