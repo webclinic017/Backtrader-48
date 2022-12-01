@@ -16,33 +16,33 @@ class Agent:
             self.asset, self.commission, self.leverage)
         self.analyzer = Analyzer.Analyzer(self.dataframe)
 
-    def open_long_position(self, price, amount):
+    def open_long_position(self, idx, amount):
         print('Open long position.')
-        self.analyzer.record_open(self.asset, price)
+        self.analyzer.record_open(self.asset, idx)
 
         self.asset, self.holding = self.orderer.open_long_position(
-            price, amount)
+            self.dataframe['Close'][idx], amount)
 
-    def close_long_position(self, price, amount):
+    def close_long_position(self, idx, amount):
         print('Close long position.')
         self.asset, self.holding = self.orderer.close_long_position(
-            price, amount)
+            self.dataframe['Close'][idx], amount)
 
-        self.analyzer.record_close(self.asset, price)
+        self.analyzer.record_close(self.asset, idx)
 
-    def open_short_position(self, price, amount):
+    def open_short_position(self, idx, amount):
         print('Open short position.')
-        self.analyzer.record_open(self.asset, price)
+        self.analyzer.record_open(self.asset, idx)
 
         self.asset, self.holding = self.orderer.open_short_position(
-            price, amount)
+            self.dataframe['Close'][idx], amount)
 
-    def close_short_position(self, price, amount):
+    def close_short_position(self, idx, amount):
         print('Close short position.')
         self.asset, self.holding = self.orderer.close_short_position(
-            price, amount)
+            self.dataframe['Close'][idx], amount)
 
-        self.analyzer.record_close(self.asset, price)
+        self.analyzer.record_close(self.asset, idx)
 
     def log(self, price):
         self.analyzer.record_log(self.asset, self.holding, price)
@@ -53,6 +53,9 @@ class Agent:
     def analyze(self):
         self.analyzer.analysis()
 
+    def fill_unuse_place(self, end):
+        self.analyzer.fill_unuse_place(end, self.asset)
+        
     def print_agent_detail(self):
         print('asset:', self.asset)
         print('leverage:', self.leverage)
