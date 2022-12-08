@@ -1,5 +1,6 @@
 :: install python pakage
-pip install -r requirement.txt
+pip install pipenv
+pipenv install
 
 echo F | XCOPY .env.example .env
 
