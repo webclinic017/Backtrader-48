@@ -1,8 +1,8 @@
 # Back-Trader
 
 ## TA-Lib fast installation
-To install TA-Lib fast, please use the folder inside "fast pakege".
+To use TA-Lib, please use the folders inside "fast pakege".
 
-The folder name "talib" and "TA_Lib-0.4.24.dist-info" is pre-compile.
+The folders name "talib" and "TA_Lib-0.4.24.dist-info" is pre-compile.
 
-To use this, please move these two files into pipenv's directory/Lib/site-pakages
+Please move these two files into "pipenv's directory/Lib/site-pakages" then you can use.
